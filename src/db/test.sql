@@ -1,0 +1,58 @@
+DROP TABLE IF EXISTS users CASCADE;
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  avatar VARCHAR(255),
+  join_date TIMESTAMP NOT NULL DEFAULT Now()
+  last_login TIMESTAMP NOT NULL DEFAULT Now()
+);
+
+CREATE TABLE owls (
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  speed INTEGER NOT NULL,
+  carrying_capacity INTEGER NOT NULL,
+  image VARCHAR(255)
+);
+
+CREATE TABLE user_owls (
+  id SERIAL PRIMARY KEY NOT NULL,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  owl_id INTEGER REFERENCES owls(id) ON DELETE CASCADE
+);
+
+CREATE TABLE countries (
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  abbreviation VARCHAR(5) NOT NULL,
+  timezone INTEGER NOT NULL,
+  flag_image VARCHAR(255)
+);
+
+CREATE TABLE letters (
+  id SERIAL PRIMARY KEY NOT NULL,
+  sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  country_id INTEGER REFERENCES countries(id) ON DELETE CASCADE,
+  user_owl_id INTEGER REFERENCES user_owls(id) ON DELETE CASCADE,
+  receiver_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  content TEXT,
+  sent_date TIMESTAMP NOT NULL DEFAULT Now(),
+  delivery_date TIMESTAMP,
+  pick_up_date TIMESTAMP
+);
+
+CREATE TABLE seals (
+  id SERIAL PRIMARY KEY NOT NULL,
+  country_id INTEGER REFERENCES countries(id) ON DELETE CASCADE,
+  title VARCHAR(255) NOT NULL,
+  image VARCHAR(255)
+);
+
+CREATE TABLE user_seals (
+  id SERIAL PRIMARY KEY NOT NULL,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  seal_id INTEGER REFERENCES seals(id) ON DELETE CASCADE
+);
