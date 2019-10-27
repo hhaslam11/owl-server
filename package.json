@@ -1,24 +1,5 @@
 {
-  "name": "owl-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hhaslam11/owl-server.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hhaslam11/owl-server/issues"
-  },
-  "homepage": "https://github.com/hhaslam11/owl-server#readme",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "dotenv": "^8.1.0",
-    "express": "^4.17.1"
-  }
+  "name": "owl",
+  "private": true,
+  "dependencies": {}
 }
