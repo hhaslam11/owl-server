@@ -5,8 +5,8 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :username
       t.string :password
       t.text :avatar
-      t.timestamp :join_date
-      t.timestamp :last_login
+      t.timestamp :join_date, default: -> { 'CURRENT_TIMESTAMP' }
+      t.timestamp :last_login, default: -> { 'CURRENT_TIMESTAMP' }
     end
   end
 end

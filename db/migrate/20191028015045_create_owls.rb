@@ -5,6 +5,8 @@ class CreateOwls < ActiveRecord::Migration[5.1]
       t.integer :speed
       t.integer :carrying_capacity
       t.text :image
+
+      t.timestamps
     end
   end
 end

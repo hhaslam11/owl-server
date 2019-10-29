@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20191028015125) do
     t.bigint "user_owl_id"
     t.bigint "receiver_id"
     t.text "content"
-    t.datetime "sent_date"
+    t.datetime "sent_date", default: -> { "now()" }
     t.datetime "delivery_date"
     t.datetime "pick_up_date"
     t.index ["country_id"], name: "index_letters_on_country_id"
@@ -42,23 +42,31 @@ ActiveRecord::Schema.define(version: 20191028015125) do
     t.integer "speed"
     t.integer "carrying_capacity"
     t.text "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "seals", force: :cascade do |t|
     t.bigint "country_id"
     t.string "title"
     t.text "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_seals_on_country_id"
   end
 
   create_table "seals_users", id: false, force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "seal_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_owls", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "owl_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["owl_id"], name: "index_user_owls_on_owl_id"
     t.index ["user_id"], name: "index_user_owls_on_user_id"
   end
@@ -68,8 +76,8 @@ ActiveRecord::Schema.define(version: 20191028015125) do
     t.string "username"
     t.string "password"
     t.text "avatar"
-    t.datetime "join_date"
-    t.datetime "last_login"
+    t.datetime "join_date", default: -> { "now()" }
+    t.datetime "last_login", default: -> { "now()" }
   end
 
   add_foreign_key "letters", "countries"

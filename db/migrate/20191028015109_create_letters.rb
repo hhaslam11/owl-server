@@ -6,7 +6,7 @@ class CreateLetters < ActiveRecord::Migration[5.1]
       t.references :user_owl, foreign_key: true
       t.references :receiver, foreign_key: { to_table: :users }
       t.text :content
-      t.timestamp :sent_date
+      t.timestamp :sent_date, default: -> { 'CURRENT_TIMESTAMP' }
       t.timestamp :delivery_date
       t.timestamp :pick_up_date
     end
