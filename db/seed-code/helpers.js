@@ -33,4 +33,8 @@ const utcToAvgInt = (utcArr) => {
  return result / resultArr.length
 }
 
-module.exports = { arrToRbCreateSeed, utcToAvgInt };
+const roundRandNum = (max) => {
+  return Math.round(Math.random()*max)
+}
+
+module.exports = { arrToRbCreateSeed, utcToAvgInt, roundRandNum };
