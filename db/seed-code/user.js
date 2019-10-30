@@ -1,4 +1,6 @@
 const fs = require('fs');
+const arrToRbCreateSeed = require('./helpers.js');
+
 fs.readFile('./userdata.csv', "utf8", (err, data) => {
   if (err) throw err;
 
@@ -8,17 +10,7 @@ fs.readFile('./userdata.csv', "utf8", (err, data) => {
     return `{ email: '${splitRow[0]}', username: '${splitRow[1]}', password: '${splitRow[2]}'}`
   })
 
-  let resultString = 'User.create(['
-  for (let i = 0; i < result.length; i++) {
-    resultString += result[i]
-    if (i < (result.length - 1)) {
-      resultString += ', '
-    } else {
-      resultString += '])'
-    }
-  }
-
-  console.log(resultString, typeof resultString);
+  resultString = arrToRbCreateSeed('User', result);
   
   fs.writeFile('./user_seeds.rb', resultString, (err) => {
     if (err) throw err;

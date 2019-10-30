@@ -1,0 +1,1 @@
+Owl.create([{ name: 'Billy', speed: 100, carrying_capacity: 1}, { name: 'Clementine', speed: 150, carrying_capacity: 2}, { name: 'Joey', speed: 200, carrying_capacity: 3}])
