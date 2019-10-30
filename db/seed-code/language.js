@@ -1,6 +1,6 @@
 const https = require('https');
 const fs = require('fs');
-const arrToRbCreateSeed = require('./helpers.js');
+const { arrToRbCreateSeed } = require('./helpers.js');
 
 https.get('https://restcountries.eu/rest/v2/all?fields=languages', (resp) => {
   let data = '';
