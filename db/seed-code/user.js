@@ -7,7 +7,7 @@ fs.readFile('./userdata.csv', "utf8", (err, data) => {
   let rows = data.split('\n');
   let result = rows.map(el => {
     splitRow = el.split(',')
-    return `{ email: '${splitRow[0]}', username: '${splitRow[1]}', password: '${splitRow[2]}' }`
+    return `{ email: '${splitRow[0]}', username: '${splitRow[1]}', password: '${splitRow[2]}', password_confirmation: '${splitRow[2]}' }`
   })
 
   resultString = arrToRbCreateSeed('User', result);

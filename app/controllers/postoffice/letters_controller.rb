@@ -1,5 +1,5 @@
-class CountriesController < ApplicationController
-
+class Postoffice::LettersController < ApplicationController
+  
   def index
     received_letters = Letter.where('to_country_id = ?', params[:country_id])
     render json: { status: 'SUCCESS', data: received_letters }
@@ -11,8 +11,8 @@ class CountriesController < ApplicationController
   end
 
   def update
-    letter = Letter.new(letter_params)
-
+    letter = Letter.where('to_country_id = ? AND id = ?'params[:country_id] , params[:id])
+    letter.receiver_id = letter_params
     if letter.save
       render json: { status: 'SUCCESS' }
     else
@@ -24,5 +24,7 @@ class CountriesController < ApplicationController
   def letter_params
     params.require(:letter).permit(:sender_id, :from_country_id, :to_country_id, :user_owl_id, :content, :sent_date)
   end
+
+end
 
 end

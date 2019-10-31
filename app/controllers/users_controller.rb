@@ -13,7 +13,8 @@ class UsersController < ApplicationController
       userOwl = UserOwl.new(user_id: user.id, owl_id: 1)
       
       if userOwl.save
-        render json: { status: 'SUCCESS'}
+        data = { id: user.id }
+        render json: { status: 'SUCCESS', data: data }
       else
         render json: { status: 'ERROR', data: userOwl.errors}
       end
@@ -25,7 +26,7 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:email, :username, :password, :avatar)
+    params.require(:user).permit(:email, :username, :password, :password_confirmation, :avatar)
   end
 
 end

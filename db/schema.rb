@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20191029055628) do
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "username"
-    t.string "password"
+    t.string "password_digest"
     t.text "avatar"
     t.datetime "join_date", default: -> { "now()" }
     t.datetime "last_login", default: -> { "now()" }

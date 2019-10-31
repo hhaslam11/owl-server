@@ -10,6 +10,8 @@
 
   'pg', '>= 0.18', '< 2.0'
 
+  'bcrypt', '~> 3.1.7'
+
 * Configuration
 
   To install gems:

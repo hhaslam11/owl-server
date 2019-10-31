@@ -1,0 +1,2 @@
+module Postoffice::LettersHelper
+end
