@@ -1,18 +1,25 @@
 class UsersController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def show
     user = User.find(params[:id])
     data = { id: user.id, email: user.email, username: user.username, avatar: user.avatar, join_date: user.join_date, last_login: user.last_login }
-    render json: { status: 'SUCESS', data: data  }
+    render json: { status: 'SUCCESS', data: data  }
   end
 
   def create
     user = User.new(user_params)
-    userOwl = UserOwl.new(user_id: user.id, owl_id: 1)
-    if user.save && userOwl.save
-      render json: { status: 'SUCESS'}
+    
+    if user.save
+      userOwl = UserOwl.new(user_id: user.id, owl_id: 1)
+      
+      if userOwl.save
+        render json: { status: 'SUCCESS'}
+      else
+        render json: { status: 'ERROR', data: userOwl.errors}
+      end
+      
     else
-      errors = { user: user.errors, userOwl: userOwl.errors}
-      render json: { status: 'ERROR', data: errors}
+      render json: { status: 'ERROR', data: user.errors}
     end
   end
 
@@ -20,4 +27,5 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:email, :username, :password, :avatar)
   end
+
 end

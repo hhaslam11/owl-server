@@ -35,16 +35,18 @@ ActiveRecord::Schema.define(version: 20191029055628) do
 
   create_table "letters", force: :cascade do |t|
     t.bigint "sender_id"
-    t.bigint "country_id"
+    t.bigint "from_country_id"
+    t.bigint "to_country_id"
     t.bigint "user_owl_id"
     t.bigint "receiver_id"
     t.text "content"
     t.datetime "sent_date", default: -> { "now()" }
     t.datetime "delivery_date"
     t.datetime "pick_up_date"
-    t.index ["country_id"], name: "index_letters_on_country_id"
+    t.index ["from_country_id"], name: "index_letters_on_from_country_id"
     t.index ["receiver_id"], name: "index_letters_on_receiver_id"
     t.index ["sender_id"], name: "index_letters_on_sender_id"
+    t.index ["to_country_id"], name: "index_letters_on_to_country_id"
     t.index ["user_owl_id"], name: "index_letters_on_user_owl_id"
   end
 
@@ -91,7 +93,8 @@ ActiveRecord::Schema.define(version: 20191029055628) do
     t.datetime "last_login", default: -> { "now()" }
   end
 
-  add_foreign_key "letters", "countries"
+  add_foreign_key "letters", "countries", column: "from_country_id"
+  add_foreign_key "letters", "countries", column: "to_country_id"
   add_foreign_key "letters", "user_owls"
   add_foreign_key "letters", "users", column: "receiver_id"
   add_foreign_key "letters", "users", column: "sender_id"

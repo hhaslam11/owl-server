@@ -13,6 +13,6 @@ class OwlsController < ApplicationController
       })
     end
     
-    render json: { status: 'SUCESS', data: data }
+    render json: { status: 'SUCCESS', data: data }
   end
 end
