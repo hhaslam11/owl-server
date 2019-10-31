@@ -7,7 +7,7 @@ class User < ApplicationRecord
   validates :email, presence: true,
                     format: { with: /@/, message: "must be valid" },
                     uniqueness: { case_sensitive: false }
-  validates :username, presence: true
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 6 }
   # validates :password_confirmation, presence: true
   attribute :avatar, default: FFaker::Avatar.image
