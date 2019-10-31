@@ -8,7 +8,6 @@ class UsersController < ApplicationController
 
   def create
     user = User.new(user_params)
-    
     if user.save
       userOwl = UserOwl.new(user_id: user.id, owl_id: 1)
       
@@ -26,7 +25,7 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:email, :username, :password, :password_confirmation, :avatar)
+    params.permit(:email, :username, :password, :password_confirmation, :avatar)
   end
 
 end
