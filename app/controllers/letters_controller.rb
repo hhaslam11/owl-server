@@ -50,15 +50,34 @@ class LettersController < ApplicationController
       }
 
       if User.exists?(id: letter.receiver_id)
-        receiver = User.find(letter.receiver_id)
+        to_user = User.find(letter.receiver_id)
+
+        receiver = {
+        id: to_user.id,
+        email: to_user.email,
+        username: to_user.username,
+        avatar: to_user.avatar,
+        country: receiving_country
+      }
       end
+
+      if User.exists?(id: letter.sender_id)
+        from_user = User.find(letter.sender_id)
       
+        sender = {
+          id: from_user.id,
+          email: from_user.email,
+          username: from_user.username,
+          avatar: from_user.avatar,
+          country: sending_country
+        }
+      end
+
       {
         id: letter.id,
-        sender_id: letter.sender_id,
-        sending_country: sending_country,
-        receiving_country: receiving_country,
-        receiver: receiver, content: letter.content,
+        sender: sender,
+        receiver: receiver,
+        content: letter.content,
         sent_date: letter.sent_date,
         delivery_date: letter.delivery_date,
         pick_up_date: letter.pick_up_date
