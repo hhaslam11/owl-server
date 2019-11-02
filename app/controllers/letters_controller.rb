@@ -1,7 +1,6 @@
 class LettersController < ApplicationController
   def index
-    # letters = Letter.where(`#{id} = ?`, params[:user_id])
-    data = { sent_letters: letters('sender_id'), received_letters: letters('receiver_id') }
+    data = { sent_letters: transformLetters('sender_id', params[:user_id]), received_letters: transformLetters('receiver_id', params[:user_id]) }
     render json: { status: 'SUCCESS', data: data }
   end
 
@@ -17,8 +16,7 @@ class LettersController < ApplicationController
 
   # not using user id at all - authentication?
   def show
-    letter = Letter.where('id = ?', params[:id])
-    render json: { status: 'SUCCESS', data: letter }
+    render json: { status: 'SUCCESS', data: transformLetters('id', params[:user_id]) }
   end
 
   private
@@ -27,11 +25,9 @@ class LettersController < ApplicationController
   end
 
   private
-  def letters (id)
-    letters = Letter.where("#{id} = ?", params[:user_id])
-    pp letters
+  def transformLetters(id, param)
+    letters = Letter.where("#{id} = ?", param)
     return letters.map { |letter|
-      puts "test"
       from_country = Country.find(letter.from_country_id)
       to_country = Country.find(letter.to_country_id)
 
