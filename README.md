@@ -35,9 +35,14 @@
   To rollback all migrations
 
   ```rake db:rollback STEP=10000000```
-  To add seeds to a fresh database
 
-  ```rake db:reset db:seed```
+  To add reset and reseed
+
+  ```rake db:reset```
+
+  To seed
+
+  ```db:seed```
 
 * How to run the test suite
 

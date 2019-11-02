@@ -2,7 +2,7 @@ const fs = require('fs');
 const { arrToRbCreateSeed } = require('./helpers.js');
 
 result = []
-for (let i = 1; i < 501; i++) {
+for (let i = 1; i < 498; i++) {
   result.push(`{ user_id: ${i}, owl_id: 1 }`)
 }
 

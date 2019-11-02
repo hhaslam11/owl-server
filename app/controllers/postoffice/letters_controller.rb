@@ -6,12 +6,12 @@ class Postoffice::LettersController < ApplicationController
   end
 
   def show
-    letter = Letter.where('to_country_id = ? AND id = ?'params[:country_id] , params[:id])
+    letter = Letter.where('to_country_id = ? AND id = ?', params[:country_id] , params[:id])
     render json: { status: 'SUCCESS', data: letter }
   end
 
   def update
-    letter = Letter.where('to_country_id = ? AND id = ?'params[:country_id] , params[:id])
+    letter = Letter.where('to_country_id = ? AND id = ?', params[:country_id] , params[:id])
     letter.receiver_id = letter_params
     if letter.save
       render json: { status: 'SUCCESS' }
@@ -24,7 +24,5 @@ class Postoffice::LettersController < ApplicationController
   def letter_params
     params.require(:letter).permit(:sender_id, :from_country_id, :to_country_id, :user_owl_id, :content, :sent_date)
   end
-
-end
 
 end

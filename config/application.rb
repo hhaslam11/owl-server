@@ -26,6 +26,7 @@ module OwlMessenger
     # -- all .rb files in that directory are automatically loaded.
 
     # Don't generate system test files.
+    config.active_record.belongs_to_required_by_default = false
     config.generators.system_tests = nil
 
     config.middleware.insert_before 0, Rack::Cors do
