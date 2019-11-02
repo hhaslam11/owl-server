@@ -1,6 +1,6 @@
 class LettersController < ApplicationController
   def index
-    data = { sent_letters: transformLetters('sender_id', params[:user_id]), received_letters: transformLetters('receiver_id', params[:user_id]) }
+    data = { sent_letters: transform_letters('sender_id', params[:user_id]), received_letters: transform_letters('receiver_id', params[:user_id]) }
     render json: { status: 'SUCCESS', data: data }
   end
 
@@ -16,7 +16,7 @@ class LettersController < ApplicationController
 
   # not using user id at all - authentication?
   def show
-    render json: { status: 'SUCCESS', data: transformLetters('id', params[:user_id]) }
+    render json: { status: 'SUCCESS', data: transform_letters('id', params[:user_id]) }
   end
 
   private
@@ -25,7 +25,15 @@ class LettersController < ApplicationController
   end
 
   private
-  def transformLetters(id, param)
+  def is_read(pick_up_date)
+    if pick_up_date
+      return true
+    end
+    false
+  end
+
+  private
+  def transform_letters(id, param)
     letters = Letter.where("#{id} = ?", param)
     return letters.map { |letter|
       from_country = Country.find(letter.from_country_id)
@@ -80,7 +88,8 @@ class LettersController < ApplicationController
         content: letter.content,
         sent_date: letter.sent_date,
         delivery_date: letter.delivery_date,
-        pick_up_date: letter.pick_up_date
+        pick_up_date: letter.pick_up_date,
+        read: is_read(letter.pick_up_date)
       }
     }
   end
