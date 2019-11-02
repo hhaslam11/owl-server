@@ -1,4 +1,6 @@
 class LettersController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
     data = { sent_letters: transform_letters('sender_id', params[:user_id]), received_letters: transform_letters('receiver_id', params[:user_id]) }
     render json: { status: 'SUCCESS', data: data }
@@ -19,9 +21,20 @@ class LettersController < ApplicationController
     render json: { status: 'SUCCESS', data: transform_letters('id', params[:user_id]) }
   end
 
+  def update
+    letter = Letter.find(params[:id])
+    letter.update!(letter_params.except("read", "user_id", "id"))
+
+    if letter_params[:read]
+      letter.update!({pick_up_date: Time.now})
+    end
+
+    render json: { status: 'SUCCESS', data: transform_letters('id', params[:id]) }
+  end
+
   private
   def letter_params
-    params.require(:letter).permit(:sender_id, :from_country_id, :to_country_id, :user_owl_id, :content, :sent_date)
+    params.permit(:user_id, :id, :sender_id, :from_country_id, :to_country_id, :user_owl_id, :receiver_id, :content, :sent_date, :delivery_date, :pick_up_date, :read)
   end
 
   private

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :users, only: [:create, :show] do
     resources :owls, only: [:index]
-    resources :letters, only: [:index, :create, :show]
+    resources :letters, only: [:index, :create, :show, :update]
   end
 
   get '/postoffice/:country_id/letters' => 'postoffice/letters#index'
