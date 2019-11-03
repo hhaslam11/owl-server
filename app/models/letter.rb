@@ -8,6 +8,6 @@ class Letter < ApplicationRecord
   after_initialize :init
 
   def init
-    self.sent_date = Time.now if self.delivery_date.nil?
+    self.sent_date = Time.now if self.sent_date.nil?
   end 
 end

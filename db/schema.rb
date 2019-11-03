@@ -37,10 +37,10 @@ ActiveRecord::Schema.define(version: 20191029055628) do
     t.bigint "sender_id"
     t.bigint "from_country_id"
     t.bigint "to_country_id"
-    t.bigint "user_owl_id", default: 1, null: false
+    t.bigint "user_owl_id"
     t.bigint "receiver_id"
     t.text "content"
-    t.datetime "sent_date", default: -> { "now()" }, null: false
+    t.datetime "sent_date"
     t.datetime "delivery_date"
     t.datetime "pick_up_date"
     t.index ["from_country_id"], name: "index_letters_on_from_country_id"
