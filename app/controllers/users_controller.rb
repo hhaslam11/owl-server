@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  skip_before_action :verify_authenticity_token
   def show
     user = User.find(params[:id])
     data = { id: user.id, email: user.email, username: user.username, avatar: user.avatar, join_date: user.join_date, last_login: user.last_login }

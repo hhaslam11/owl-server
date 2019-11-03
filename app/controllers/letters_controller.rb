@@ -1,5 +1,4 @@
 class LettersController < ApplicationController
-  skip_before_action :verify_authenticity_token
 
   def index
     data = { sent_letters: transform_letters('sender_id', params[:user_id]), received_letters: transform_letters('receiver_id', params[:user_id]) }
@@ -7,10 +6,12 @@ class LettersController < ApplicationController
   end
 
   def create
-    letter = Letter.new(letter_params)
+    create_params = letter_params.except("read", "user_id", "id")
+
+    letter = Letter.new(create_params)
 
     if letter.save
-      render json: { status: 'SUCCESS' }
+      render json: { status: 'SUCCESS', data: letter}
     else
       render json: { status: 'ERROR', data: letter.errors }
     end
