@@ -7,10 +7,12 @@ class LettersController < ApplicationController
   end
 
   def create
-    letter = Letter.new(letter_params)
+    create_params = letter_params.except("read", "user_id", "id")
+
+    letter = Letter.new(create_params)
 
     if letter.save
-      render json: { status: 'SUCCESS' }
+      render json: { status: 'SUCCESS', data: letter }
     else
       render json: { status: 'ERROR', data: letter.errors }
     end
