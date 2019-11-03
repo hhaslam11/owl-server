@@ -4,9 +4,10 @@ Rails.application.routes.draw do
     resources :letters, only: [:index, :create, :show, :update]
   end
 
-  get '/postoffice/:country_id/letters' => 'postoffice/letters#index'
-  get '/postoffice/:country_id/letters/:id' => 'postoffice/letters#show'
-  post '/postoffice/:country_id/letters/:id' => 'postoffice/letters#update'
+  put '/postoffice/:country_id/new' => 'postoffice/letters#update'
+  patch '/postoffice/:country_id/new' => 'postoffice/letters#update'
 
+  get '/country' => 'sessions#index'
+  
   post '/login' => 'sessions#create'
 end
