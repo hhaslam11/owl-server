@@ -51,26 +51,32 @@ class LettersController < ApplicationController
   def transform_letters(id, param)
     letters = Letter.where("#{id} = ?", param)
     return letters.map { |letter|
-      from_country = Country.find(letter.from_country_id)
-      to_country = Country.find(letter.to_country_id)
 
-      sending_country = {
-        id: from_country.id,
-        name: from_country.name,
-        abbreviation: from_country.abbreviation,
-        timezone: from_country.timezone,
-        flag_image: from_country.flag_image,
-        languages: from_country.languages
-      }
+      if Country.exists?(id: letter.from_country_id)
+        from_country = Country.find(letter.from_country_id)
 
-      receiving_country = {
-        id: to_country.id,
-        name: to_country.name,
-        abbreviation: to_country.abbreviation,
-        timezone: to_country.timezone,
-        flag_image: to_country.flag_image,
-        languages: to_country.languages
-      }
+        sending_country = {
+          id: from_country.id,
+          name: from_country.name,
+          abbreviation: from_country.abbreviation,
+          timezone: from_country.timezone,
+          flag_image: from_country.flag_image,
+          languages: from_country.languages
+        }
+      end
+
+      if Country.exists?(id: letter.to_country_id)
+        to_country = Country.find(letter.to_country_id)
+
+        receiving_country = {
+          id: to_country.id,
+          name: to_country.name,
+          abbreviation: to_country.abbreviation,
+          timezone: to_country.timezone,
+          flag_image: to_country.flag_image,
+          languages: to_country.languages
+        }
+      end
 
       if User.exists?(id: letter.receiver_id)
         to_user = User.find(letter.receiver_id)
