@@ -19,10 +19,10 @@ class Postoffice::LettersController < ApplicationController
   end
 
  private
- # country_id - current user's id (TO DO: maybe take in country code and convert to id)
+ # country_code - current user's country code
  # receiver_id - current user's id
   def letter_params
-    params.permit(:country_code, :receiver_id, :pick_up_date)
+    params.permit(:country_code, :receiver_id)
   end
 
 end
