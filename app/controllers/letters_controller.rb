@@ -10,14 +10,15 @@ class LettersController < ApplicationController
   end
 
   def create
-    create_params = letter_params.except("read", "user_id", "id", "from_country_code", "to_country_code")
+    create_params = letter_params.except("read", "user_id", "id", "from_country_code", "to_country_code", "reply", "letter_replied_to")
+    
     
     from_country = Country.where('abbreviation = ?', letter_params[:from_country_code])[0]
     to_country = Country.where('abbreviation = ?', letter_params[:to_country_code])[0]
 
     create_params[:sender_id] = letter_params[:user_id]
     create_params[:from_country_id] = from_country.id
-    create_params[:to_country_id] = to_country.id
+    
 
     if create_params[:user_owl_id]
       user_owl = UserOwl.where('user_id = ? AND owl_id = ?', letter_params[:user_id], create_params[:user_owl_id])[0]
@@ -28,11 +29,18 @@ class LettersController < ApplicationController
       create_params[:user_owl_id] = user_owl.id
     end
 
-    if !create_params[:sent_date]
-      create_params[:sent_date] = Time.current
-    end
+    # if !create_params[:sent_date]
+    #   create_params[:sent_date] = Time.current
+    # end
 
-    create_params[:delivery_date] = LettersHelper.deliverySetting(from_country, to_country, owl) # 86400  #km * owl.speed
+    create_params[:delivery_date] = LettersHelper.deliverySetting(from_country, to_country, owl)
+
+    if letter_params[:reply]
+      letter_replied_to = Letter.find(letter_params[:letter_replied_to])
+      create_params[:receiver_id] = letter_replied_to.sender_id
+    else
+      create_params[:to_country_id] = to_country.id
+    end
 
     letter = Letter.new(create_params)
 
@@ -50,7 +58,7 @@ class LettersController < ApplicationController
 
   def update
     letter = Letter.find(params[:id])
-    letter.update!(letter_params.except("read", "user_id", "id"))
+    letter.update!(letter_params.except("read", "user_id", "id", "reply", "letter_replied_to"))
 
     if letter_params[:read]
       letter.update!({pick_up_date: Time.current})
@@ -61,7 +69,7 @@ class LettersController < ApplicationController
 
   private
   def letter_params
-    params.permit(:user_id, :id, :from_country_code, :to_country_code, :user_owl_id, :content, :sent_date, :read)
+    params.permit(:user_id, :id, :from_country_code, :to_country_code, :user_owl_id, :content, :sent_date, :read, :reply, :letter_replied_to)
   end
   
 end
