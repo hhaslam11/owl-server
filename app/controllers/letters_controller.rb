@@ -128,7 +128,7 @@ class LettersController < ApplicationController
         id: letter.id,
         sender: sender,
         receiver: receiver,
-        user_owl_id: user_owl_id,
+        user_owl_id: letter.user_owl_id,
         content: letter.content,
         sent_date: letter.sent_date,
         delivery_date: letter.delivery_date,
