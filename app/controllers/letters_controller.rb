@@ -1,3 +1,4 @@
+require_relative '../helpers/letters_helper'
 class LettersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -29,7 +30,7 @@ class LettersController < ApplicationController
       create_params[:sent_date] = Time.current
     end
 
-    create_params[:delivery_date] = Time.current + 86400  #km * owl.speed
+    create_params[:delivery_date] = deliverySetting(from_country, to_country, owl) # 86400  #km * owl.speed
 
     letter = Letter.new(create_params)
 
@@ -67,6 +68,19 @@ class LettersController < ApplicationController
       return true
     end
     false
+  end
+
+  private
+  def deliverySetting(country1, country2, owl)
+    if !country1.lat || !country1.lon || !country2.lat || !country2.lon
+      time = 86400
+    else
+      puts LettersHelper.distance(country1.lat, country1.lon, country2.lat, country2.lon)
+      puts owl.speed 
+      puts time = LettersHelper.distance(country1.lat, country1.lon, country2.lat, country2.lon) / (1000 * owl.speed) * 3600
+      time = LettersHelper.distance(country1.lat, country1.lon, country2.lat, country2.lon) / (1000 * owl.speed) * 3600
+    end
+    Time.current + time
   end
 
   private

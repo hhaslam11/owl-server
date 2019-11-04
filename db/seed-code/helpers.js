@@ -1,3 +1,5 @@
+const fs = require('fs');
+const https = require('https');
 /**
  * 
  * @param {String} seedName e.g. User/Country/Langage,..
@@ -37,4 +39,39 @@ const roundRandNum = (max) => {
   return Math.round(Math.random() * (max - 1) + 1)
 }
 
-module.exports = { arrToRbCreateSeed, utcToAvgInt, roundRandNum };
+const getDataPromise = (fileName) => {
+  return new Promise(function(resolve, reject){
+    fs.readFile(fileName, "utf8", (err, data) => {
+        err ? reject(err) : resolve(data);
+    });
+  });
+}
+
+const writeDataPromise = (fileName, data) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(fileName, data, (err) => {
+        err ? reject(err) : resolve('The file has been saved!');
+    });
+  });
+}
+
+const getAPIDataPromise = (path) => {
+  return new Promise((resolve, reject) => {
+    https.get(path, (resp) => {
+      let data = '';
+
+      resp.on('data', (chunk) => {
+        data += chunk;
+      });
+    
+      resp.on('end', () => {
+        resolve(data)
+      });
+    
+    }).on("error", (err) => {
+      reject(err.message)
+    });
+  });
+}
+
+module.exports = { arrToRbCreateSeed, utcToAvgInt, roundRandNum, getDataPromise, writeDataPromise, getAPIDataPromise };

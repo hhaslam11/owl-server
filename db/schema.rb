@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20191029055628) do
     t.string "name"
     t.string "abbreviation"
     t.integer "timezone"
+    t.decimal "lat", precision: 9, scale: 6
+    t.decimal "lon", precision: 9, scale: 6
     t.text "flag_image"
   end
 
