@@ -7,18 +7,17 @@ class SessionsController < ApplicationController
     puts request.env['HTTP_X_FORWARDED_FOR']
     handler = IPinfo::create(access_token)
     
-    details = handler.details(request.remote_ip)
-    
     #testing for a proxy
+    details = handler.details(request.env['HTTP_X_FORWARDED_FOR'])
+    
     if !details.respond_to?(:country)
-      details = handler.details(request.env['HTTP_X_FORWARDED_FOR'])
+      details = handler.details(request.remote_ip)
     end
 
     if !details.respond_to?(:country)
-      render json: { status: 'ERROR', data: "#{request.remote_ip} was not found in the database" }
+      render json: { status: 'ERROR', data: "#{request.remote_ip}/ #{request.env['HTTP_X_FORWARDED_FOR']} was not found in the database" }
     else
-      country = Country.where('abbreviation = ?', details.country)
-      render json: { status: 'SUCCESS', data: country}
+      render json: { status: 'SUCCESS', data: details.country}
     end
   end
 
