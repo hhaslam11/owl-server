@@ -17,6 +17,12 @@
   To install gems:
 
   ```bundle install```
+  
+  Create a .env file
+  
+  - example in .env.example
+  
+  (Sign up for https://ipinfo.io/developers and place your token key in)
 
   To run the server:
   
