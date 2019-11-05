@@ -1,5 +1,7 @@
 # README
 
+Meant to be run with client: https://github.com/hhaslam11/owl-client
+
 * Ruby version
 
   ruby 2.3.5p376
