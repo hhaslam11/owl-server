@@ -31,6 +31,148 @@ module LettersHelper
     false
   end
 
+  def LettersHelper.data_structure(user_id)
+  
+    # letters = (letters1 << letters2).flatten!
+    result = Hash.new
+    #IF LETTER IS SENT BY CURRENT USER
+    letters1 = Letter.where("sender_id = ?", user_id)
+    letters1.each do |letter|
+
+      if letter.to_country_id
+        country = Country.find(letter.to_country_id)
+      end
+      
+      #IF LETTER HAS BEEN PICKED UP
+      if letter.receiver_id
+        user = User.find(letter.receiver_id)
+        
+        user_data = {
+          user_id: user.id,
+          username: user.username,
+          avatar: user.avatar,
+          country: country,
+          letters: Array.new,
+          sort_time: nil #letter.sent_date - last letter in array
+        }
+
+        if !result[user.id]
+          result[user.id] = user_data
+        end
+        
+      #IF LETTER HAS NOT BEEN PICKED UP
+      else
+        letter_data = {
+          user_owl_id: letter.user_owl_id,
+          content: letter.content,
+          sent_date: letter.sent_date,
+          delivery_date: letter.delivery_date,
+          pick_up_date: letter.pick_up_date,
+          read: self.is_read(letter.pick_up_date),
+          sent_by_current_user: true,
+          sort_time: letter.sent_date
+        }
+        
+        user_data = {
+          user_id: nil,
+          username: nil,
+          avatar: nil,
+          country: country,
+          letters: [ letter_data ],
+          sort_time: letter.sent_date
+        }
+        result[letter.sent_date] = user_data
+      end
+    end
+
+    letters1.each do |letter|
+      #IF LETTER HAS BEEN PICKED UP
+      if letter.receiver_id
+        
+        letter_data = {
+          user_owl_id: letter.user_owl_id,
+          content: letter.content,
+          sent_date: letter.sent_date,
+          delivery_date: letter.delivery_date,
+          pick_up_date: letter.pick_up_date,
+          read: self.is_read(letter.pick_up_date),
+          sent_by_current_user: true,
+          sort_time: letter.sent_date
+        }
+
+        (result[letter.receiver_id][:letters] << letter_data).flatten!
+      end
+    end
+      
+    #IF LETTER IS SENT BY SOMEONE ELSE
+    letters2 = Letter.where("receiver_id = ? AND delivery_date is not null AND delivery_date <= ?", user_id, Time.current)
+    letters2.each do |letter|
+
+      if letter.from_country_id
+      country = Country.find(letter.from_country_id)
+      end
+
+      user = User.find(letter.sender_id)
+      user_data = {
+          user_id: user.id,
+          username: user.username,
+          avatar: user.avatar,
+          country: country,
+          letters: Array.new,
+          sort_time: letter.delivery_date
+        }
+
+      if !result[user.id]
+        result[user.id] = user_data
+      end
+    end
+
+    letters2.each do |letter|
+      letter_data = {
+          user_owl_id: letter.user_owl_id,
+          content: letter.content,
+          sent_date: letter.sent_date,
+          delivery_date: letter.delivery_date,
+          pick_up_date: letter.pick_up_date,
+          read: self.is_read(letter.pick_up_date),
+          sent_by_current_user: false,
+          sort_time: letter.delivery_date
+        }
+
+        (result[letter.sender_id][:letters] << letter_data).flatten!
+    end
+
+    #sorting letters arrays
+    result.each do |user_id, user_object|
+      puts "///" 
+      puts user_object
+      puts "...."
+      puts user_object[:letters] 
+      puts "*********"
+      user_object[:letters].sort_by {|letter| 
+      puts letter 
+      puts "-------"
+      letter[:sort_time].to_date}
+    end
+
+    #sorting entire object
+    result.sort_by { |k, v| 
+    puts v[:sort_time]
+    v[:sort_time] }
+
+    final_result = Array.new
+
+    result.each do |arr_of_user_keys_and_objects|
+      (final_result << arr_of_user_keys_and_objects[1]).flatten!
+    end
+    return final_result
+  end
+
+
+
+  
+
+
   def LettersHelper.transform_letters(id, param)
     letters = Letter.where("#{id} = ?", param)
     return letters.map { |letter|

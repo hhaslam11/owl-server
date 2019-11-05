@@ -3,10 +3,10 @@ class LettersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    data = { sent_letters: LettersHelper.transform_letters('sender_id', params[:user_id]),
-              received_letters: LettersHelper.transform_letters('receiver_id', params[:user_id])
-            }
-    render json: { status: 'SUCCESS', data: data }
+    # data = { sent_letters: LettersHelper.transform_letters('sender_id', params[:user_id]),
+    #           received_letters: LettersHelper.transform_letters('receiver_id', params[:user_id])
+    #         }
+    render json: { status: 'SUCCESS', data: LettersHelper.data_structure(letter_params[:user_id]) }
   end
 
   def create
@@ -28,10 +28,6 @@ class LettersController < ApplicationController
       owl = Owl.find(user_owl.owl_id)
       create_params[:user_owl_id] = user_owl.id
     end
-
-    # if !create_params[:sent_date]
-    #   create_params[:sent_date] = Time.current
-    # end
 
     create_params[:delivery_date] = LettersHelper.deliverySetting(from_country, to_country, owl)
 
