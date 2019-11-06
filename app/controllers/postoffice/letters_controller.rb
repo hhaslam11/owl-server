@@ -11,7 +11,7 @@ class Postoffice::LettersController < ApplicationController
       letter.update!(letter_params.except("country_code"))
       letter.update!({pick_up_date: Time.current})
       if letter.save
-        render json: { status: 'SUCCESS', data: letter }
+        render json: { status: 'SUCCESS', data: LettersHelper.letter_trnsf(letter) }
       else
         render json: { status: 'ERROR', data: letter.errors }
       end

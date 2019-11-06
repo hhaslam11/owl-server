@@ -181,12 +181,14 @@ module LettersHelper
 
 
 
-  
-
-
   def LettersHelper.transform_letters(id, param)
     letters = Letter.where("#{id} = ?", param)
     return letters.map { |letter|
+      self.letter_trnsf(letter)
+    }
+  end
+
+  def LettersHelper.letter_trnsf(letter)
 
       if Country.exists?(id: letter.from_country_id)
         from_country = Country.find(letter.from_country_id)
@@ -249,7 +251,5 @@ module LettersHelper
         pick_up_date: letter.pick_up_date,
         read: self.is_read(letter.pick_up_date)
       }
-    }
   end
-
 end
