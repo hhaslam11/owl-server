@@ -52,8 +52,7 @@ module LettersHelper
           username: user.username,
           avatar: user.avatar,
           country: country,
-          letters: Array.new,
-          sort_time: nil #letter.sent_date - last letter in array
+          letters: Array.new
         }
 
         if !result[user.id]
@@ -62,34 +61,23 @@ module LettersHelper
         
       #IF LETTER HAS NOT BEEN PICKED UP
       else
-        letter_data = {
-          user_owl_id: letter.user_owl_id,
-          content: letter.content,
-          sent_date: letter.sent_date,
-          delivery_date: letter.delivery_date,
-          pick_up_date: letter.pick_up_date,
-          read: self.is_read(letter.pick_up_date),
-          sent_by_current_user: true,
-          sort_time: letter.sent_date
-        }
         
         user_data = {
           user_id: nil,
           username: nil,
           avatar: nil,
           country: country,
-          letters: [ letter_data ],
-          sort_time: letter.sent_date
+          letters: Array.new
         }
-        result[letter.sent_date] = user_data
+        if !result[letter.sent_date]
+          result[letter.sent_date] = user_data
+        end
       end
     end
 
     letters1.each do |letter|
       #IF LETTER HAS BEEN PICKED UP
-      if letter.receiver_id
-        
-        letter_data = {
+      letter_data = {
           user_owl_id: letter.user_owl_id,
           content: letter.content,
           sent_date: letter.sent_date,
@@ -97,10 +85,18 @@ module LettersHelper
           pick_up_date: letter.pick_up_date,
           read: self.is_read(letter.pick_up_date),
           sent_by_current_user: true,
-          sort_time: letter.sent_date
+          sort_time: letter.sent_date,
+          sender: letter.sender_id
         }
 
+      if letter.receiver_id
+
         (result[letter.receiver_id][:letters] << letter_data).flatten!
+
+      else
+
+        (result[letter.sent_date][:letters] << letter_data).flatten!
+
       end
     end
       
@@ -118,8 +114,7 @@ module LettersHelper
           username: user.username,
           avatar: user.avatar,
           country: country,
-          letters: Array.new,
-          sort_time: letter.delivery_date
+          letters: Array.new
         }
 
       if !result[user.id]
@@ -136,7 +131,8 @@ module LettersHelper
           pick_up_date: letter.pick_up_date,
           read: self.is_read(letter.pick_up_date),
           sent_by_current_user: false,
-          sort_time: letter.delivery_date
+          sort_time: letter.delivery_date,
+          sender: letter.sender_id
         }
 
         (result[letter.sender_id][:letters] << letter_data).flatten!
@@ -144,21 +140,33 @@ module LettersHelper
 
     #sorting letters arrays
     result.each do |user_id, user_object|
-      puts "///" 
-      puts user_object
-      puts "...."
-      puts user_object[:letters] 
-      puts "*********"
+      
       user_object[:letters].sort_by {|letter| 
-      puts letter 
-      puts "-------"
-      letter[:sort_time].to_date}
+      
+      letter[:sort_time]
+      
+    }
+    end
+
+    result.each do |userid, user_object|
+      #if it's sent by user, but not picked up
+ 
+      puts user_object[:letters].last[:sender].to_s == user_id
+      if user_object[:letters].last[:sender].to_s == user_id
+        user_object[:sort_time] = user_object[:letters].last[:sent_date]
+        puts user_object[:letters].last[:sent_date]
+        puts "....."
+      else
+        user_object[:sort_time] = user_object[:letters].last[:delivery_date]
+        puts user_object[:letters].last[:delivery_date]
+        puts "-----"
+      end
     end
 
     #sorting entire object
-    result.sort_by { |k, v| 
-    puts v[:sort_time]
-    v[:sort_time] }
+    result.sort_by do |k, v| 
+      v[:sort_time] ? v[:sort_time] : 0
+    end
 
     final_result = Array.new
 
