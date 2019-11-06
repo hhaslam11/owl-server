@@ -1,5 +1,7 @@
 # README
 
+Meant to be run with client: https://github.com/hhaslam11/owl-client
+
 * Ruby version
 
   ruby 2.3.5p376
@@ -17,6 +19,12 @@
   To install gems:
 
   ```bundle install```
+  
+  Create a .env file
+  
+  - example in .env.example
+  
+  (Sign up for https://ipinfo.io/developers and place your token key in)
 
   To run the server:
   
@@ -44,8 +52,3 @@
 
   ```db:seed```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
