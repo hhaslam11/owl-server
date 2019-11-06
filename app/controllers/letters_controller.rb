@@ -33,10 +33,10 @@ class LettersController < ApplicationController
 
     if letter_params[:reply]
       letter_replied_to = Letter.find(letter_params[:letter_replied_to])
-      create_params[:receiver_id] = letter_replied_to.sender_id
-    else
-      create_params[:to_country_id] = to_country.id
+      create_params[:receiver_id] = letter_replied_to.sender_id  
     end
+    
+    create_params[:to_country_id] = to_country.id
 
     letter = Letter.new(create_params)
 
