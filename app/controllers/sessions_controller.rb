@@ -21,6 +21,11 @@ class SessionsController < ApplicationController
     end
   end
 
+  def show
+    country = Country.where('abbreviation = ?', country_params[:country_code])[0]
+    render json: { status: 'SUCCESS', data: country }
+  end
+
   def create
     if user = User.authenticate_with_credentials(login_params[:email], login_params[:password])
       render json: { status: 'SUCCESS', data: { id: user.id }}
@@ -32,6 +37,11 @@ class SessionsController < ApplicationController
   private
   def login_params
     params.permit(:email, :password)
+  end
+
+  private
+  def country_params
+    params.permit(:country_code)
   end
 
 end

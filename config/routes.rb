@@ -10,5 +10,7 @@ Rails.application.routes.draw do
 
   get '/country' => 'sessions#index'
 
+  get '/country/:country_code' => 'sessions#show'
+
   post '/login' => 'sessions#create'
 end
