@@ -78,6 +78,7 @@ module LettersHelper
     letters1.each do |letter|
       #IF LETTER HAS BEEN PICKED UP
       letter_data = {
+          letter_id: letter.id,
           user_owl_id: letter.user_owl_id,
           content: letter.content,
           sent_date: letter.sent_date,
@@ -124,6 +125,7 @@ module LettersHelper
 
     letters2.each do |letter|
       letter_data = {
+          letter_id: letter.id,
           user_owl_id: letter.user_owl_id,
           content: letter.content,
           sent_date: letter.sent_date,
@@ -173,6 +175,7 @@ module LettersHelper
     result.each do |arr_of_user_keys_and_objects|
       (final_result << arr_of_user_keys_and_objects[1]).flatten!
     end
+
     return final_result
   end
 
