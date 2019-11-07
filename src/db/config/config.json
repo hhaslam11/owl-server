@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "vagrant",
+    "password": 123,
+    "database": "owl",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "vagrant",
+    "password": 123,
+    "database": "database_test",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "vagrant",
+    "password": 123,
+    "database": "database_production",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "operatorsAliases": false
+  }
+}
