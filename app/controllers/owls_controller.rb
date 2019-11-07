@@ -7,7 +7,21 @@ class OwlsController < ApplicationController
     user_owls.each do |user_owl|
       letters = Letter.where('user_owl_id = ?', user_owl.id)
 
-      return letters.map { |letter|
+      owl = Owl.where('id = ?', user_owl.owl_id)
+      data.push({
+        user_owls_id: user_owl.id,
+        owl: owl,
+        letters: letters_transform(letters)
+      })
+    end
+    
+    render json: { status: 'SUCCESS', data: data }
+  end
+end
+
+private
+def letters_transform(letters)
+  return letters.map { |letter|
 
         if Country.exists?(id: letter.to_country_id)
           to_country = Country.find(letter.to_country_id)
@@ -43,15 +57,4 @@ class OwlsController < ApplicationController
         }
 
       }
-
-      owl = Owl.where('id = ?', user_owl.owl_id)
-      data.push({
-        user_owls_id: user_owl.id,
-        owl: owl,
-        letters: letters
-      })
-    end
-    
-    render json: { status: 'SUCCESS', data: data }
-  end
 end
