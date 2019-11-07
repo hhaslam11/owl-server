@@ -44,7 +44,6 @@ class OwlsController < ApplicationController
         }
 
       }
-    end
 
       owl = Owl.where('id = ?', user_owl.owl_id)
       data.push({
