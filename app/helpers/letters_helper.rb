@@ -77,11 +77,9 @@ module LettersHelper
 
     letters1.each do |letter|
       #IF LETTER HAS BEEN PICKED UP
-      from_country = Country.find(letter.from_country_id)
 
       letter_data = {
           letter_id: letter.id,
-          sent_from: from_country.name,
           user_owl_id: letter.user_owl_id,
           content: letter.content,
           sent_date: letter.sent_date,
