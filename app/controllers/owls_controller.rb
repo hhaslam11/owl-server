@@ -39,8 +39,7 @@ class OwlsController < ApplicationController
           content: letter.content,
           sent_date: letter.sent_date,
           delivery_date: letter.delivery_date,
-          pick_up_date: letter.pick_up_date,
-          read: self.is_read(letter.pick_up_date)
+          pick_up_date: letter.pick_up_date
         }
 
       }
